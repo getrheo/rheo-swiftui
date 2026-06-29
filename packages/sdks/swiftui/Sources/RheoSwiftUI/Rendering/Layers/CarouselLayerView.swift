@@ -181,10 +181,6 @@ struct CarouselLayerView: View {
       } else {
         next = index
       }
-      if ctx.interactive,
-         carouselShouldEmitComplete(previousIndex: index, index: next, slideCount: slideCount, loop: loop) {
-        ctx.onRespond(.carousel)
-      }
       previousIndex = index
       index = next
       scheduleAutoAdvance()
