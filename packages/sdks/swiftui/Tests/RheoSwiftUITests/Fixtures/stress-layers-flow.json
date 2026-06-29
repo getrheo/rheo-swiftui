@@ -1,0 +1,83 @@
+{
+  "flowId": "00000000-0000-4000-8000-000000000003",
+  "schemaVersion": 6,
+  "version": 1,
+  "defaultLocale": "en",
+  "locales": ["en", "es"],
+  "entryScreenId": "scr_inputs",
+  "theme": {
+    "primary": "#4f46e5",
+    "foreground": { "light": "#0a0a0a", "dark": "#fafafa" }
+  },
+  "builderMeta": {},
+  "screens": [
+    {
+      "id": "scr_inputs",
+      "name": "Inputs",
+      "regions": {
+        "body": {
+          "id": "lyr_inputs_body",
+          "kind": "stack",
+          "direction": "vertical",
+          "children": [
+            {
+              "id": "lyr_choice",
+              "kind": "single_choice",
+              "fieldKey": "tier",
+              "children": [
+                {
+                  "id": "lyr_premium",
+                  "kind": "stack",
+                  "direction": "vertical",
+                  "children": [{ "id": "lyr_premium_t", "kind": "text", "text": { "default": "Premium" } }]
+                },
+                {
+                  "id": "lyr_standard",
+                  "kind": "stack",
+                  "direction": "vertical",
+                  "children": [{ "id": "lyr_standard_t", "kind": "text", "text": { "default": "Standard" } }]
+                }
+              ],
+              "optionBindings": [
+                { "optionId": "premium", "rootLayerId": "lyr_premium" },
+                { "optionId": "standard", "rootLayerId": "lyr_standard" }
+              ],
+              "branching": {
+                "enabled": true,
+                "conditions": [{ "choiceId": "premium", "goTo": "scr_premium" }]
+              }
+            }
+          ]
+        }
+      },
+      "next": { "default": "scr_standard" }
+    },
+    {
+      "id": "scr_premium",
+      "name": "Premium",
+      "regions": {
+        "body": {
+          "id": "lyr_premium_body",
+          "kind": "stack",
+          "direction": "vertical",
+          "children": [{ "id": "lyr_premium_done", "kind": "text", "text": { "default": "Premium path" } }]
+        }
+      },
+      "next": { "default": null }
+    },
+    {
+      "id": "scr_standard",
+      "name": "Standard",
+      "regions": {
+        "body": {
+          "id": "lyr_standard_body",
+          "kind": "stack",
+          "direction": "vertical",
+          "children": [{ "id": "lyr_standard_done", "kind": "text", "text": { "default": "Standard path" } }]
+        }
+      },
+      "next": { "default": null }
+    }
+  ],
+  "decisionNodes": []
+}
