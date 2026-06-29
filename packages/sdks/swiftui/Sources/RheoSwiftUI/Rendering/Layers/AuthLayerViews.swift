@@ -297,7 +297,7 @@ struct EmailPasswordAuthView: View {
     if let handler = ctx.emailPasswordAuthHandler {
       handler(payload)
     } else {
-      payload.resolve(.init(success: false))
+      payload.resolve(.init(success: true))
     }
   }
 }

@@ -45,10 +45,7 @@ public final class AttributionRuntime: @unchecked Sendable {
         }
       )
     }
-    lock.lock()
-    let current = latest
-    lock.unlock()
-    listener(current)
+    listener(latest)
     return { [weak self] in
       guard let self else { return }
       self.unsubscribe.forEach { $0() }

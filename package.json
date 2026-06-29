@@ -11,7 +11,7 @@
     "test": "pnpm -r test",
     "build:swiftui": "pnpm --filter @rheo/swiftui build",
     "test:swiftui": "pnpm --filter @rheo/swiftui test",
-    "verify": "pnpm build:swiftui && pnpm test:swiftui"
+    "verify": "node scripts/check-no-platform-contracts.mjs && pnpm build:swiftui && pnpm test:swiftui"
   },
   "devDependencies": {
     "turbo": "^2.9.6",

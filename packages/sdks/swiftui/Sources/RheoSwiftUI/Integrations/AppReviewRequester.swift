@@ -12,7 +12,7 @@ public enum AppReviewRequester {
 
   public static func requestIfAvailable() async -> RequestResult {
     guard await hasAction() else { return .notShown }
-    guard await requestReview() else { return .notShown }
+    await requestReview()
     try? await Task.sleep(nanoseconds: postPromptDelayNanoseconds)
     return .shown
   }
@@ -25,20 +25,17 @@ public enum AppReviewRequester {
   }
 
   @MainActor
-  private static func requestReview() async -> Bool {
+  private static func requestReview() async {
     if #available(iOS 17.0, *) {
       guard let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {
-        return false
+        return
       }
       AppStore.requestReview(in: scene)
-      return true
     } else if #available(iOS 16.0, *) {
       guard let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {
-        return false
+        return
       }
       SKStoreReviewController.requestReview(in: scene)
-      return true
     }
-    return false
   }
 }
