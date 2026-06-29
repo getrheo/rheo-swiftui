@@ -16,6 +16,11 @@ public struct ResolvedAppIntegrations: Codable, Equatable, Sendable {
     self.raw = raw
   }
 
+  private enum CodingKeys: String, CodingKey {
+    case appsflyer
+    case revenuecat
+  }
+
   public init(from decoder: Decoder) throws {
     let value = try JSONValue(from: decoder)
     if case .object(let object) = value {
@@ -23,16 +28,9 @@ public struct ResolvedAppIntegrations: Codable, Equatable, Sendable {
     } else {
       raw = [:]
     }
-    appsflyer = Self.integrationEnabled(from: raw["appsflyer"])
-    revenuecat = Self.integrationEnabled(from: raw["revenuecat"])
-  }
-
-  private static func integrationEnabled(from value: JSONValue?) -> IntegrationEnabled? {
-    guard case .object(let object) = value,
-          let enabled = object["enabled"]?.boolValue else {
-      return nil
-    }
-    return IntegrationEnabled(enabled: enabled)
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    appsflyer = try container.decodeIfPresent(IntegrationEnabled.self, forKey: .appsflyer)
+    revenuecat = try container.decodeIfPresent(IntegrationEnabled.self, forKey: .revenuecat)
   }
 
   public func encode(to encoder: Encoder) throws {
