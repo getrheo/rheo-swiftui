@@ -14,40 +14,11 @@ public struct ManifestResolveCacheEntry: Codable, Sendable {
 
 public final class ManifestResolveCache: @unchecked Sendable {
   private let defaults: UserDefaults
-  private static let memoryLock = NSLock()
-  private static var memoryByDefaults: [ObjectIdentifier: [String: ManifestResolveCacheEntry]] = [:]
-
-  private var defaultsKey: ObjectIdentifier { ObjectIdentifier(defaults) }
+  private let lock = NSLock()
+  private var memory: [String: ManifestResolveCacheEntry] = [:]
 
   public init(userDefaults: UserDefaults = .standard) {
     self.defaults = userDefaults
-  }
-
-  private func memoryKeys() -> Set<String> {
-    Self.memoryLock.lock()
-    defer { Self.memoryLock.unlock() }
-    return Set(Self.memoryByDefaults[defaultsKey]?.keys ?? [])
-  }
-
-  private func readMemory(key: String) -> ManifestResolveCacheEntry? {
-    Self.memoryLock.lock()
-    defer { Self.memoryLock.unlock() }
-    return Self.memoryByDefaults[defaultsKey]?[key]
-  }
-
-  private func writeMemory(key: String, entry: ManifestResolveCacheEntry) {
-    Self.memoryLock.lock()
-    defer { Self.memoryLock.unlock() }
-    if Self.memoryByDefaults[defaultsKey] == nil {
-      Self.memoryByDefaults[defaultsKey] = [:]
-    }
-    Self.memoryByDefaults[defaultsKey]![key] = entry
-  }
-
-  private func clearMemory() {
-    Self.memoryLock.lock()
-    defer { Self.memoryLock.unlock() }
-    Self.memoryByDefaults[defaultsKey] = nil
   }
 
   public static let keyPrefix = "rheo:resolve:"
@@ -79,7 +50,9 @@ public final class ManifestResolveCache: @unchecked Sendable {
   }
 
   public func listEntries() -> [Summary] {
-    let memoryKeys = memoryKeys()
+    lock.lock()
+    let memoryKeys = Set(memory.keys)
+    lock.unlock()
 
     var keys = memoryKeys
     for key in defaults.dictionaryRepresentation().keys where key.hasPrefix(Self.keyPrefix) {
@@ -111,8 +84,10 @@ public final class ManifestResolveCache: @unchecked Sendable {
 
   @discardableResult
   public func clearAll() -> Int {
-    let memoryKeys = Array(memoryKeys())
-    clearMemory()
+    lock.lock()
+    let memoryKeys = Array(memory.keys)
+    memory.removeAll()
+    lock.unlock()
 
     var keys = Set(memoryKeys)
     for key in defaults.dictionaryRepresentation().keys where key.hasPrefix(Self.keyPrefix) {
@@ -132,20 +107,27 @@ public final class ManifestResolveCache: @unchecked Sendable {
   }
 
   public func load(key: String) -> ManifestResolveCacheEntry? {
-    if let mem = readMemory(key: key) {
+    lock.lock()
+    if let mem = memory[key] {
+      lock.unlock()
       return mem
     }
+    lock.unlock()
     guard let data = defaults.data(forKey: key),
           let entry = try? JSONDecoder.rheo.decode(ManifestResolveCacheEntry.self, from: data),
           !entry.etag.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
       return nil
     }
-    writeMemory(key: key, entry: entry)
+    lock.lock()
+    memory[key] = entry
+    lock.unlock()
     return entry
   }
 
   public func save(key: String, entry: ManifestResolveCacheEntry) {
-    writeMemory(key: key, entry: entry)
+    lock.lock()
+    memory[key] = entry
+    lock.unlock()
     if let data = try? JSONEncoder.rheo.encode(entry) {
       defaults.set(data, forKey: key)
     }

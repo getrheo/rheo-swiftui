@@ -17,6 +17,9 @@ let package = Package(
         .product(name: "RheoSwiftUIAppsFlyer", package: "swiftui"),
       ],
       path: "Sources/RheoExampleApp",
+      resources: [
+        .process("../../Support"),
+      ],
     ),
   ]
 )

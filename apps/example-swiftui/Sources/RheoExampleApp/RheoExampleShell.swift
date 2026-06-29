@@ -4,7 +4,6 @@ import SwiftUI
 @MainActor
 final class RheoExampleShellModel: ObservableObject {
   @Published private(set) var shellConfig: RheoConfig?
-  @Published private(set) var providerIdentity = UUID()
 
   func reloadFromStorage() {
     let saved = ExampleConfigStore.load()
@@ -13,7 +12,6 @@ final class RheoExampleShellModel: ObservableObject {
 
   func syncFromSavedConfig(_ config: ExampleConfig) {
     shellConfig = config.buildRheoConfig()
-    providerIdentity = UUID()
   }
 
   func clearShell() {
@@ -36,7 +34,6 @@ struct RheoExampleShell<Content: View>: View {
         RheoProvider(config: config) {
           content()
         }
-        .id(model.providerIdentity)
       } else {
         content()
       }
