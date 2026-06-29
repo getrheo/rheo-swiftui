@@ -1,0 +1,70 @@
+{
+  "flowId": "00000000-0000-4000-8000-000000000001",
+  "schemaVersion": 6,
+  "version": 1,
+  "defaultLocale": "en",
+  "locales": ["en"],
+  "entryScreenId": "scr_start",
+  "theme": {
+    "primary": "#6366f1",
+    "background": "#ffffff",
+    "foreground": "#0a0a0a"
+  },
+  "builderMeta": {},
+  "screens": [
+    {
+      "id": "scr_start",
+      "name": "Start",
+      "regions": {
+        "body": {
+          "id": "lyr_body",
+          "kind": "stack",
+          "direction": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "id": "lyr_title",
+              "kind": "text",
+              "text": { "default": "Welcome" },
+              "style": { "fontSize": 24, "fontWeight": 700 }
+            },
+            {
+              "id": "lyr_go",
+              "kind": "button",
+              "variant": "primary",
+              "action": { "kind": "continue" },
+              "children": [
+                {
+                  "id": "lyr_go_t",
+                  "kind": "text",
+                  "text": { "default": "Continue" }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "next": { "default": "scr_done" }
+    },
+    {
+      "id": "scr_done",
+      "name": "Done",
+      "regions": {
+        "body": {
+          "id": "lyr_done_body",
+          "kind": "stack",
+          "direction": "vertical",
+          "children": [
+            {
+              "id": "lyr_done",
+              "kind": "text",
+              "text": { "default": "Done" }
+            }
+          ]
+        }
+      },
+      "next": { "default": null }
+    }
+  ],
+  "decisionNodes": []
+}

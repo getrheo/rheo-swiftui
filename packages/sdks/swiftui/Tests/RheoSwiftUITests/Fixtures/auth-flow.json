@@ -1,0 +1,66 @@
+{
+  "flowId": "00000000-0000-4000-8000-000000000002",
+  "schemaVersion": 6,
+  "version": 1,
+  "defaultLocale": "en",
+  "locales": ["en"],
+  "entryScreenId": "scr_auth",
+  "builderMeta": {},
+  "screens": [
+    {
+      "id": "scr_auth",
+      "name": "Auth",
+      "regions": {
+        "body": {
+          "id": "lyr_auth_body",
+          "kind": "stack",
+          "direction": "vertical",
+          "children": [
+            {
+              "id": "lyr_oauth",
+              "kind": "oauth_login",
+              "children": [
+                {
+                  "id": "lyr_google",
+                  "kind": "oauth_provider",
+                  "variant": "preset",
+                  "provider": "google"
+                }
+              ]
+            },
+            {
+              "id": "lyr_email_pw",
+              "kind": "email_password_auth",
+              "mode": "sign_in",
+              "fieldKey": "auth",
+              "children": [
+                {
+                  "id": "lyr_email",
+                  "kind": "email_password_field",
+                  "slot": "email",
+                  "placeholder": { "default": "Email" }
+                },
+                {
+                  "id": "lyr_pw",
+                  "kind": "email_password_field",
+                  "slot": "password",
+                  "placeholder": { "default": "Password" }
+                },
+                {
+                  "id": "lyr_submit",
+                  "kind": "email_password_submit",
+                  "buttonVariant": "primary",
+                  "children": [
+                    { "id": "lyr_submit_t", "kind": "text", "text": { "default": "Sign in" } }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "next": { "default": null }
+    }
+  ],
+  "decisionNodes": []
+}

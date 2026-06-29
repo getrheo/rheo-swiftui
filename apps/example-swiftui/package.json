@@ -1,0 +1,11 @@
+{
+  "name": "@rheo/example-swiftui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SwiftUI example app for RheoSwiftUI — config form + FlowView against a local API",
+  "scripts": {
+    "build": "node ../../scripts/run-swiftui-example.mjs build",
+    "run": "node ../../scripts/run-swiftui-example.mjs run",
+    "open": "open Package.swift"
+  }
+}
