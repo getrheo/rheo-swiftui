@@ -1,8 +1,28 @@
 # rheo-swiftui
 
-SwiftUI SDK for Rheo (`RheoSwiftUI` via SwiftPM). Release tags: `swiftui-vX.Y.Z`.
+Public home for **RheoSwiftUI** — the native SwiftUI SDK for iOS 16+ (channel resolve, `FlowView`, analytics, optional RevenueCat and AppsFlyer adapters).
 
-**Example:** [rheo-example-swiftui](https://github.com/getrheo/rheo-example-swiftui)
+## SwiftPM products
+
+| Product | Purpose |
+| --- | --- |
+| `RheoSwiftUI` | Core provider, flow host, renderer |
+| `RheoSwiftUIRevenueCat` | RevenueCat paywall adapter (optional) |
+| `RheoSwiftUIAppsFlyer` | AppsFlyer attribution adapter (optional) |
+
+Package manifest: `packages/sdks/swiftui/Package.swift`.
+
+**Release:** git tag `swiftui-v2.0.2` (not npm). Pin the tag in your app's `Package.swift` or use the [example app](https://github.com/getrheo/rheo-example-swiftui) submodule layout.
+
+`apiBaseURL` defaults to `https://api.getrheo.io` when omitted.
+
+## Example app
+
+[rheo-example-swiftui](https://github.com/getrheo/rheo-example-swiftui) — config screen + `FlowView`, mirrors the Expo sample.
+
+## Development
+
+Requires **Xcode** with an iOS Simulator runtime.
 
 ```bash
 pnpm install
@@ -10,4 +30,4 @@ pnpm build:swiftui
 pnpm test:swiftui
 ```
 
-[SwiftUI SDK docs](https://docs.getrheo.io/docs/developer-guide/sdk-swiftui)
+[Documentation](https://docs.getrheo.io/docs/developer-guide/sdk-swiftui) · [CONTRIBUTING](./CONTRIBUTING.md) · [MIT](./LICENSE)
