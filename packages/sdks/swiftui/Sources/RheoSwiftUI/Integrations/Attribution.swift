@@ -18,7 +18,6 @@ public protocol AttributionProvider: Sendable {
 
 public final class AttributionRuntime: @unchecked Sendable {
   private var providers: [AttributionProvider]
-  private var unsubscribe: [@Sendable () -> Void] = []
   private var latest: [String: JSONValue] = [:]
   private let lock = NSLock()
 
@@ -33,8 +32,9 @@ public final class AttributionRuntime: @unchecked Sendable {
   }
 
   public func subscribe(_ listener: @escaping @Sendable ([String: JSONValue]) -> Void) -> @Sendable () -> Void {
+    var subscriptionUnsubscribe: [@Sendable () -> Void] = []
     for provider in providers {
-      unsubscribe.append(
+      subscriptionUnsubscribe.append(
         provider.start { [weak self] snapshot in
           guard let self, let snapshot else { return }
           self.lock.lock()
@@ -45,11 +45,12 @@ public final class AttributionRuntime: @unchecked Sendable {
         }
       )
     }
-    listener(latest)
-    return { [weak self] in
-      guard let self else { return }
-      self.unsubscribe.forEach { $0() }
-      self.unsubscribe.removeAll()
+    lock.lock()
+    let current = latest
+    lock.unlock()
+    listener(current)
+    return {
+      subscriptionUnsubscribe.forEach { $0() }
     }
   }
 }

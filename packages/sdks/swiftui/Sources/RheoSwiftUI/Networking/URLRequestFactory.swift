@@ -10,8 +10,8 @@ enum URLRequestFactory {
     let body = SdkResolveRequest(
       identity: SdkIdentity(
         appUserId: config.resolvedAppUserId(),
-        customUserId: nil,
-        sessionId: nil
+        customUserId: config.customUserId,
+        sessionId: config.sessionId
       ),
       context: SdkContext(
         platform: nil,
@@ -37,8 +37,8 @@ enum URLRequestFactory {
     let body = SdkResolveRequest(
       identity: SdkIdentity(
         appUserId: config.resolvedAppUserId(),
-        customUserId: nil,
-        sessionId: nil
+        customUserId: config.customUserId,
+        sessionId: config.sessionId
       ),
       context: SdkContext(
         platform: nil,
