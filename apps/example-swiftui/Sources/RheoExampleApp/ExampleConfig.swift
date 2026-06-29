@@ -73,7 +73,7 @@ struct ExampleConfig: Codable, Equatable {
   var canStart: Bool {
     !publishableKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
       && !channelId.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-      && apiBaseURL() != nil
+      && !apiBaseUrl.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
   }
 
   func apiBaseURL() -> URL? {

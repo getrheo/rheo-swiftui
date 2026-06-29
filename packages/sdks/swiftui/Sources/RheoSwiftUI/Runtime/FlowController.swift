@@ -22,7 +22,7 @@ public final class FlowController: ObservableObject {
   private var lastViewedScreenId: String?
   private var terminalHandledKey = ""
   private var presentedSurfaceId: String?
-  nonisolated(unsafe) private var attributionUnsubscribe: (@Sendable () -> Void)?
+  private var attributionUnsubscribe: (@Sendable () -> Void)?
 
   public init(
     channelId: String,
@@ -44,10 +44,6 @@ public final class FlowController: ObservableObject {
     self.attributionRuntime = attributionProviders.isEmpty ? nil : AttributionRuntime(providers: attributionProviders)
     self.onFlowCompleted = onFlowCompleted
     self.onFlowAbandoned = onFlowAbandoned
-  }
-
-  deinit {
-    attributionUnsubscribe?()
   }
 
   public var screen: Screen? {
