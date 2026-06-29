@@ -26,7 +26,8 @@ public final class ManifestResolveCache: @unchecked Sendable {
   private func memoryKeys() -> Set<String> {
     Self.memoryLock.lock()
     defer { Self.memoryLock.unlock() }
-    return Set(Self.memoryByDefaults[defaultsKey]?.keys ?? [])
+    guard let keys = Self.memoryByDefaults[defaultsKey]?.keys else { return [] }
+    return Set(keys)
   }
 
   private func readMemory(key: String) -> ManifestResolveCacheEntry? {

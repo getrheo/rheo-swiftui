@@ -130,6 +130,9 @@ struct ManifestPrefetchSection: View {
         .disabled(clearing)
       }
     }
+    .onAppear {
+      refresh()
+    }
   }
 
   private func entryTitle(_ entry: ManifestResolveCache.Summary) -> String {
