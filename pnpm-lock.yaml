@@ -30,8 +30,6 @@ importers:
         specifier: ^8.59.0
         version: 8.62.0(eslint@10.6.0)(typescript@5.9.3)
 
-  apps/example-swiftui: {}
-
   packages/config:
     dependencies:
       eslint-plugin-unused-imports:
