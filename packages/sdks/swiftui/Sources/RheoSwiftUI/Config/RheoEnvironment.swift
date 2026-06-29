@@ -3,7 +3,12 @@ import SwiftUI
 public final class RheoRuntime: ObservableObject {
   @Published public private(set) var config: RheoConfig
   public let apiClient: RheoAPIClient
-  public lazy var eventQueue: EventQueue = EventQueue(configProvider: { self.config })
+  public lazy var eventQueue: EventQueue = {
+    let initialConfig = config
+    return EventQueue(configProvider: { [weak self] in
+      self?.config ?? initialConfig
+    })
+  }()
 
   public init(config: RheoConfig) {
     self.config = config
