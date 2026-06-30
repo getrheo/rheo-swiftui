@@ -2,7 +2,8 @@
 
 | React Native (`@getrheo/react-native-expo` / bare) | SwiftUI (`RheoSwiftUI`) | Notes |
 | --- | --- | --- |
-| `RheoProvider` | `RheoProvider` | Swift-native config object |
+| `RheoProvider` | `RheoProvider` | Swift-native config object; optional `logLevel` |
+| `logLevel` on `RheoProvider` | `logLevel` on `RheoProvider` | `SdkLogLevel`: `silent` (default), `warn`, `debug` |
 | `useRheo` | `@Environment(\.rheoRuntime)` | No React hook equivalent |
 | `useRheoCustomUserId` | `RheoRuntime.setCustomUserId(_:)` | Applied at event flush |
 | `useEventQueue` | `RheoRuntime.eventQueue` | Internal; same batching semantics |

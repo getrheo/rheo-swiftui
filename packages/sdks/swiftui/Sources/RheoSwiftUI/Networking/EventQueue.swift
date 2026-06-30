@@ -7,19 +7,24 @@ public actor EventQueue {
   }
 
   private let configProvider: @Sendable () -> RheoConfig
+  private let loggerProvider: @Sendable () -> SdkLogger
   private var buffer: [BufferedItem] = []
   private var flushTask: Task<Void, Never>?
   private let maxBatchSize = 500
   private let flushNanoseconds: UInt64 = 5_000_000_000
 
-  public init(configProvider: @escaping @Sendable () -> RheoConfig) {
+  public init(
+    configProvider: @escaping @Sendable () -> RheoConfig,
+    loggerProvider: @escaping @Sendable () -> SdkLogger = { .silent }
+  ) {
     self.configProvider = configProvider
+    self.loggerProvider = loggerProvider
   }
 
   public func enqueue(_ input: TrackEventInput, channelId: String) {
     let trimmed = channelId.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else {
-      print("[rheo] enqueue skipped: missing channelId")
+      loggerProvider().warn("[rheo] enqueue skipped: missing channelId")
       return
     }
     buffer.append(BufferedItem(channelId: trimmed, input: input))
@@ -39,7 +44,8 @@ public actor EventQueue {
 
     let grouped = Dictionary(grouping: drained, by: \.channelId)
     let config = configProvider()
-    let client = RheoAPIClient(config: config)
+    let logger = loggerProvider()
+    let client = RheoAPIClient(config: config, logger: logger)
     for (channelId, items) in grouped {
       let inputs = items.map(\.input)
       var start = 0

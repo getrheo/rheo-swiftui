@@ -2,12 +2,17 @@ import SwiftUI
 
 public final class RheoRuntime: ObservableObject {
   @Published public private(set) var config: RheoConfig
+  public let logger: SdkLogger
   public let apiClient: RheoAPIClient
-  public lazy var eventQueue: EventQueue = EventQueue(configProvider: { self.config })
+  public lazy var eventQueue: EventQueue = EventQueue(
+    configProvider: { self.config },
+    loggerProvider: { self.logger }
+  )
 
-  public init(config: RheoConfig) {
+  public init(config: RheoConfig, logLevel: SdkLogLevel = .default) {
     self.config = config
-    self.apiClient = RheoAPIClient(config: config)
+    self.logger = SdkLogger(level: logLevel)
+    self.apiClient = RheoAPIClient(config: config, logger: SdkLogger(level: logLevel))
   }
 
   public func setCustomUserId(_ next: String?) {
@@ -34,9 +39,10 @@ public struct RheoProvider<Content: View>: View {
   public init(
     config: RheoConfig,
     prefetch: RheoPrefetch? = nil,
+    logLevel: SdkLogLevel = .default,
     @ViewBuilder content: () -> Content
   ) {
-    _runtime = StateObject(wrappedValue: RheoRuntime(config: config))
+    _runtime = StateObject(wrappedValue: RheoRuntime(config: config, logLevel: logLevel))
     self.content = content()
     self.prefetch = prefetch
     RheoIconFontRegistration.registerBundledFonts()
