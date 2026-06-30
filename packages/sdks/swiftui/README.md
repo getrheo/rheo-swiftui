@@ -6,7 +6,9 @@ layers in SwiftUI, and emits SDK analytics to Rheo.
 
 ## Install
 
-Add this package in Xcode or SwiftPM from the monorepo root, then depend on:
+**Public repo:** [getrheo/rheo-swiftui](https://github.com/getrheo/rheo-swiftui) (SwiftPM; release tag `swiftui-v2.0.2`).
+
+For local development, add this package in Xcode or SwiftPM from the monorepo root, then depend on:
 
 ```swift
 .product(name: "RheoSwiftUI", package: "RheoSwiftUI")
@@ -46,7 +48,7 @@ struct AppRoot: View {
 
 **Production:** `apiBaseURL` defaults to **`https://api.getrheo.io`** when omitted. For App Store builds with **`ob_pk_live_*`** keys, omit the override or set it explicitly — never use localhost.
 
-Release tags: `swiftui-v1.0.0` (see [`docs/operations/artifact-releases.md`](../../docs/operations/artifact-releases.md)).
+Release tags: `swiftui-v2.0.2` (see [`docs/operations/artifact-releases.md`](../../docs/operations/artifact-releases.md)).
 
 ## Parity with React Native SDK
 
@@ -54,7 +56,7 @@ See [`docs/PARITY_MATRIX.md`](docs/PARITY_MATRIX.md) and [`PARITY_SCOPE.md`](PAR
 
 | Area | SwiftUI behavior |
 | --- | --- |
-| Layer kinds | All 22 contract layer kinds |
+| Layer kinds | All 23 contract layer kinds |
 | Navigation | Instant screen swaps (authored `screen.transition` is ignored) |
 | Lottie | `lottie-ios` via `RheoSwiftUILottie`; placeholder on load failure |
 | Icons | Bundled Ionicons font + glyph map; unknown name → text fallback |
@@ -157,6 +159,10 @@ iOS) return `denied` — same as React Native today.
 
 Add the required `Info.plist` usage description strings for each permission you
 use in a flow.
+
+## Runnable example
+
+Sample app: [getrheo/rheo-example-swiftui](https://github.com/getrheo/rheo-example-swiftui) (private monorepo copy: [`apps/example-swiftui`](../../../apps/example-swiftui)).
 
 ## Verification
 
