@@ -22,11 +22,17 @@ private actor InFlightResolves {
 public final class RheoAPIClient: @unchecked Sendable {
   private let config: RheoConfig
   private let manifestCache: ManifestResolveCache
+  private let logger: SdkLogger
   private let inFlight = InFlightResolves()
 
-  public init(config: RheoConfig, manifestCache: ManifestResolveCache = ManifestResolveCache()) {
+  public init(
+    config: RheoConfig,
+    manifestCache: ManifestResolveCache = ManifestResolveCache(),
+    logger: SdkLogger = .silent
+  ) {
     self.config = config
     self.manifestCache = manifestCache
+    self.logger = logger
   }
 
   private func cacheKey(for channelId: String) -> String {
@@ -135,10 +141,10 @@ public final class RheoAPIClient: @unchecked Sendable {
       )
       let (_, response) = try await config.urlSession.data(for: request)
       if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
-        print("[rheo] events POST failed: \(http.statusCode)")
+        logger.warn("[rheo] events POST failed: \(http.statusCode)")
       }
     } catch {
-      print("[rheo] events POST error: \(error)")
+      logger.warn("[rheo] events POST error: \(error)")
     }
   }
 }

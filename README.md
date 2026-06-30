@@ -12,7 +12,7 @@ Public home for **RheoSwiftUI** — the native SwiftUI SDK for iOS 16+ (channel 
 
 Package manifest: `packages/sdks/swiftui/Package.swift`.
 
-**Release:** git tag `swiftui-v2.0.3` (not npm). Pin the tag in your app's `Package.swift` or use the [example app](https://github.com/getrheo/rheo-example-swiftui) submodule layout.
+**Release:** git tag `swiftui-v2.1.0` (not npm). Pin the tag in your app's `Package.swift` or use the [example app](https://github.com/getrheo/rheo-example-swiftui) submodule layout.
 
 `apiBaseURL` defaults to `https://api.getrheo.io` when omitted.
 
